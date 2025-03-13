@@ -7,15 +7,19 @@ info:
     nix flake metadata
 
 _commit msg:
-    git add flake.lock
-    git commit -m '{{msg}}'
-    git push
+    jj describe -m '{{msg}}'
+    jj bookmark set main -r @
+    jj git push
 
 _flake-update *ARGS:
     nix flake update {{ARGS}}
 
+_begin-code-change:
+    jj git fetch
+    jj new main
+
 # Update nixpkgs only
-update: (_flake-update "nixpkgs") (_commit "Update nixpkgs inputs")
+update: _begin-code-change (_flake-update "nixpkgs") (_commit "Update nixpkgs inputs")
 
 # Update flake inputs, commit and push to github
-update-all: (_flake-update) (_commit "Update all inputs")
+update-all: _begin-code-change (_flake-update) (_commit "Update all inputs")
