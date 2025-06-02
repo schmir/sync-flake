@@ -18,8 +18,8 @@ _begin-code-change:
     jj git fetch
     jj new main
 
-# Update nixpkgs only
-update: _begin-code-change (_flake-update "nixpkgs") (_commit "Update nixpkgs inputs")
+# Update everything but nixpkgs-stable
+update: _begin-code-change (_flake-update "nixpkgs" "flake-utils" "emacs-overlay" "home-manager") (_commit "Update most nixpkgs inputs")
 
 # Update flake inputs, commit and push to github
 update-all: _begin-code-change (_flake-update) (_commit "Update all inputs")
